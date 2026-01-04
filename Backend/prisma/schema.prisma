@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  username      String    @unique
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  apiKeys       ApiKey[]
+  apiUsage      ApiUsage[]
+  
+  @@map("users")
+}
+
+model ApiKey {
+  id          String    @id @default(uuid())
+  userId      String
+  apiKey      String    @unique
+  name        String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiUsage    ApiUsage[]
+  
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  menus     Menu[]
+  
+  @@map("categories")
+}
+
+model Menu {
+  id              String   @id @default(uuid())
+  name            String
+  description     String
+  categoryId      String
+  price           Float
+  imageUrl        String?
+  ingredients     String[]
+  isAvailable     Boolean  @default(true)
+  rating          Float?
+  calories        Int?
+  preparationTime Int?     // in minutes
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  category        Category @relation(fields: [categoryId], references: [id])
+  
+  @@index([categoryId])
+  @@index([name])
+  @@map("menus")
+}
+
+model ApiUsage {
+  id           String   @id @default(uuid())
+  userId       String
+  apiKeyId     String
+  endpoint     String
+  method       String
+  statusCode   Int
+  responseTime Int      // in milliseconds
+  timestamp    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiKey       ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([apiKeyId])
+  @@index([timestamp])
+  @@map("api_usage")
+}
