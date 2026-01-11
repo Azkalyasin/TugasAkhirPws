@@ -181,7 +181,7 @@ const createStock = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Stock berhasil ditambahkan',
-      data: stock
+      data: serializeBigInt(stock)
     });
   } catch (error) {
     console.error('Create stock error:', error);
@@ -223,7 +223,7 @@ const updateStock = async (req, res) => {
     res.json({
       success: true,
       message: 'Stock berhasil diupdate',
-      data: stock
+      data: serializeBigInt(stock)
     });
   } catch (error) {
     if (error.code === 'P2025') {

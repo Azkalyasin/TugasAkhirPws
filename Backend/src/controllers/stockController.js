@@ -2,6 +2,8 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
+const serializeBigInt = require('../utils/serializeBigInt');
+
 /**
  * Get all stocks dengan pagination
  */
@@ -37,7 +39,7 @@ const getAllStocks = async (req, res) => {
 
     res.json({
       success: true,
-      data: stocks,
+      data: serializeBigInt(stocks),
       meta: {
         total,
         page: pageNum,
@@ -80,7 +82,7 @@ const getStockBySymbol = async (req, res) => {
 
     res.json({
       success: true,
-      data: stock,
+      data: serializeBigInt(stock),
     });
   } catch (error) {
     console.error("Get stock by symbol error:", error);
@@ -128,7 +130,7 @@ const searchStocks = async (req, res) => {
 
     res.json({
       success: true,
-      data: stocks,
+      data: serializeBigInt(stocks),
       meta: {
         query: q,
         found: stocks.length,
@@ -205,7 +207,7 @@ const getStockHistory = async (req, res) => {
       data: {
         symbol: stock.symbol,
         interval,
-        prices: history,
+        prices: serializeBigInt(history),
       },
       meta: {
         from,
@@ -284,58 +286,6 @@ const getMarketSummary = async (req, res) => {
   }
 };
 
-/**
- * Get top gainers/losers
- */
-const getMarketMovers = async (req, res) => {
-  try {
-    const { type, limit = 10 } = req.query;
-
-    if (!type || !["gainers", "losers"].includes(type)) {
-      return res.status(400).json({
-        success: false,
-        error: {
-          code: "INVALID_TYPE",
-          message: 'Type harus "gainers" atau "losers"',
-        },
-      });
-    }
-
-    const limitNum = Math.min(parseInt(limit), 50);
-
-    const stocks = await prisma.stock.findMany({
-      where: {
-        changePercent: type === "gainers" ? { gt: 0 } : { lt: 0 },
-      },
-      orderBy: {
-        changePercent: type === "gainers" ? "desc" : "asc",
-      },
-      take: limitNum,
-      select: {
-        symbol: true,
-        name: true,
-        price: true,
-        change: true,
-        changePercent: true,
-        volume: true,
-      },
-    });
-
-    res.json({
-      success: true,
-      data: stocks,
-    });
-  } catch (error) {
-    console.error("Get market movers error:", error);
-    res.status(500).json({
-      success: false,
-      error: {
-        code: "SERVER_ERROR",
-        message: "Terjadi kesalahan server",
-      },
-    });
-  }
-};
 
 module.exports = {
   getAllStocks,
@@ -343,5 +293,4 @@ module.exports = {
   searchStocks,
   getStockHistory,
   getMarketSummary,
-  getMarketMovers,
 };

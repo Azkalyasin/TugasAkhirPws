@@ -8,78 +8,91 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  username      String    @unique
-  passwordHash  String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  apiKeys       ApiKey[]
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password      String
+  role          Role     @default(USER)
+  apiKey        String?  @unique
+  plan          Plan     @default(FREE)
+  apiCalls      Int      @default(0)
+  monthlyQuota  Int      @default(1000)
+  dailyQuota    Int      @default(100)
+  lastReset     DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
   apiUsage      ApiUsage[]
   
-  @@map("users")
+  @@index([email])
+  @@index([apiKey])
 }
 
-model ApiKey {
-  id          String    @id @default(uuid())
-  userId      String
-  apiKey      String    @unique
-  name        String
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  lastUsedAt  DateTime?
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  apiUsage    ApiUsage[]
+model Stock {
+  id            String   @id @default(uuid())
+  symbol        String   @unique
+  name          String
+  sector        String?
+  subsector     String?
+  price         Float
+  open          Float?
+  high          Float?
+  low           Float?
+  close         Float?
+  change        Float    @default(0)
+  changePercent Float    @default(0)
+  volume        BigInt   @default(0)
+  value         BigInt   @default(0)
+  marketCap     BigInt?
+  shares        BigInt?
+  foreignBuy    BigInt?
+  foreignSell   BigInt?
+  lastUpdate    DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   
-  @@index([userId])
-  @@map("api_keys")
+  history       StockHistory[]
+  
+  @@index([symbol])
+  @@index([sector])
 }
 
-model Category {
+model StockHistory {
   id        String   @id @default(uuid())
-  name      String
-  slug      String   @unique
+  stockId   String
+  stock     Stock    @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  date      DateTime
+  open      Float
+  high      Float
+  low       Float
+  close     Float
+  volume    BigInt
   createdAt DateTime @default(now())
-  menus     Menu[]
   
-  @@map("categories")
-}
-
-model Menu {
-  id              String   @id @default(uuid())
-  name            String
-  description     String
-  categoryId      String
-  price           Float
-  imageUrl        String?
-  ingredients     String[]
-  isAvailable     Boolean  @default(true)
-  rating          Float?
-  calories        Int?
-  preparationTime Int?     // in minutes
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  category        Category @relation(fields: [categoryId], references: [id])
-  
-  @@index([categoryId])
-  @@index([name])
-  @@map("menus")
+  @@unique([stockId, date])
+  @@index([stockId, date])
 }
 
 model ApiUsage {
-  id           String   @id @default(uuid())
-  userId       String
-  apiKeyId     String
-  endpoint     String
-  method       String
-  statusCode   Int
-  responseTime Int      // in milliseconds
-  timestamp    DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  apiKey       ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint    String
+  method      String
+  statusCode  Int
+  timestamp   DateTime @default(now())
   
-  @@index([userId])
-  @@index([apiKeyId])
-  @@index([timestamp])
-  @@map("api_usage")
+  @@index([userId, timestamp])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
 }
