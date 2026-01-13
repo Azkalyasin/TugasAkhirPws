@@ -600,12 +600,28 @@ const StockFormModal = ({ isOpen, onClose, stock, onSubmit, loading }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Change</label>
-              <input type="number" step="0.01" name="change" value={formData.change} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="125" />
+              <input
+  type="number"
+  step="0.01"
+  name="change"
+  value={formData.change}
+  disabled
+  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+/>
+
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Change Percent (%)</label>
-              <input type="number" step="0.01" name="changePercent" value={formData.changePercent} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="1.28" />
+              <input
+  type="number"
+  step="0.01"
+  name="changePercent"
+  value={formData.changePercent}
+  disabled
+  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+/>
+
             </div>
 
             <div>

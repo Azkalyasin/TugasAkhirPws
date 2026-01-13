@@ -201,63 +201,88 @@ const createStock = async (req, res) => {
 const updateStock = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateData = req.body;
+    const body = req.body;
 
-    // Convert numeric strings to proper types
-    if (updateData.price) updateData.price = parseFloat(updateData.price);
-    if (updateData.open) updateData.open = parseFloat(updateData.open);
-    if (updateData.high) updateData.high = parseFloat(updateData.high);
-    if (updateData.low) updateData.low = parseFloat(updateData.low);
-    if (updateData.close) updateData.close = parseFloat(updateData.close);
-    if (updateData.volume) updateData.volume = BigInt(updateData.volume);
-    if (updateData.marketCap) updateData.marketCap = BigInt(updateData.marketCap);
+    // Ambil data lama
+    const oldStock = await prisma.stock.findUnique({ where: { id } });
+    if (!oldStock) {
+      return res.status(404).json({
+        success: false,
+        error: { code: 'STOCK_NOT_FOUND', message: 'Stock tidak ditemukan' }
+      });
+    }
 
-    const stock = await prisma.stock.update({
-      where: { id },
-      data: {
-        ...updateData,
-        lastUpdate: new Date()
-      }
-    });
+    // Konversi
+    const newPrice = body.price ? parseFloat(body.price) : oldStock.price;
 
-      await prisma.stockHistory.create({
-      data: {
-        stockId: stock.id,
-        date: new Date(),
-        open: stock.open,
-        high: stock.high,
-        low: stock.low,
-        close: stock.close,
-        volume: stock.volume
-      }
+    const change = newPrice - oldStock.price;
+    const changePercent =
+      oldStock.price === 0 ? 0 : (change / oldStock.price) * 100;
+
+    const updateData = {
+      ...body,
+      price: newPrice,
+      change,
+      changePercent,
+      lastUpdate: new Date()
+    };
+
+    if (body.volume) updateData.volume = BigInt(body.volume);
+    if (body.marketCap) updateData.marketCap = BigInt(body.marketCap);
+
+    // Tanggal hari ini (tanpa jam)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // TRANSAKSI
+    const stock = await prisma.$transaction(async (tx) => {
+      const updated = await tx.stock.update({
+        where: { id },
+        data: updateData
+      });
+
+      await tx.stockHistory.upsert({
+        where: {
+          stockId_date: {
+            stockId: updated.id,
+            date: today
+          }
+        },
+        update: {
+          open: updated.open,
+          high: updated.high,
+          low: updated.low,
+          close: updated.close,
+          volume: updated.volume
+        },
+        create: {
+          stockId: updated.id,
+          date: today,
+          open: updated.open,
+          high: updated.high,
+          low: updated.low,
+          close: updated.close,
+          volume: updated.volume
+        }
+      });
+
+      return updated;
     });
 
     res.json({
       success: true,
-      message: 'Stock berhasil diupdate',
+      message: 'Stock & history berhasil diupdate',
       data: serializeBigInt(stock)
     });
   } catch (error) {
-    if (error.code === 'P2025') {
-      return res.status(404).json({
-        success: false,
-        error: {
-          code: 'STOCK_NOT_FOUND',
-          message: 'Stock tidak ditemukan'
-        }
-      });
-    }
-
     console.error('Update stock error:', error);
     res.status(500).json({
       success: false,
-      error: {
-        code: 'SERVER_ERROR',
-        message: 'Terjadi kesalahan server'
-      }
+      error: { code: 'SERVER_ERROR', message: 'Terjadi kesalahan server' }
     });
   }
 };
+
 
 /**
  * Delete stock
