@@ -3,7 +3,6 @@ const {
   getAllStocks,
   getStockBySymbol,
   searchStocks,
-  getMarketSummary,
   getStockHistory
 } = require('../controllers/stockController');
 const { validateApiKey } = require('../middleware/apiKey');
@@ -33,11 +32,6 @@ router.get('/stocks/:symbol', getStockBySymbol);
 
 router.get('/stocks/:symbol/history', getStockHistory);
 
-/**
- * GET /api/v1/market/summary
- * Get overall market summary (IHSG, total volume, etc.)
- */
-router.get('/market/summary', getMarketSummary);
 
 
 module.exports = router;

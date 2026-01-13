@@ -227,70 +227,9 @@ const getStockHistory = async (req, res) => {
   }
 };
 
-/**
- * Get market summary
- */
-const getMarketSummary = async (req, res) => {
-  try {
-    const [totalStocks, stockStats] = await Promise.all([
-      prisma.stock.count(),
-      prisma.stock.findMany({
-        select: {
-          changePercent: true,
-          volume: true,
-          value: true,
-          foreignBuy: true,
-          foreignSell: true,
-        },
-      }),
-    ]);
-
-    const advancing = stockStats.filter((s) => s.changePercent > 0).length;
-    const declining = stockStats.filter((s) => s.changePercent < 0).length;
-    const unchanged = stockStats.filter((s) => s.changePercent === 0).length;
-
-    const totalVolume = stockStats.reduce((sum, s) => sum + Number(s.volume), 0);
-    const totalValue = stockStats.reduce((sum, s) => sum + Number(s.value), 0);
-    const foreignBuy = stockStats.reduce((sum, s) => sum + Number(s.foreignBuy || 0), 0);
-    const foreignSell = stockStats.reduce((sum, s) => sum + Number(s.foreignSell || 0), 0);
-
-    res.json({
-      success: true,
-      data: {
-        ihsg: {
-          value: 7234.56,
-          change: 45.23,
-          changePercent: 0.63,
-        },
-        totalStocks,
-        advancing,
-        declining,
-        unchanged,
-        totalVolume,
-        totalValue,
-        foreignBuy,
-        foreignSell,
-        foreignNet: foreignBuy - foreignSell,
-        lastUpdate: new Date().toISOString(),
-      },
-    });
-  } catch (error) {
-    console.error("Get market summary error:", error);
-    res.status(500).json({
-      success: false,
-      error: {
-        code: "SERVER_ERROR",
-        message: "Terjadi kesalahan server",
-      },
-    });
-  }
-};
-
-
 module.exports = {
   getAllStocks,
   getStockBySymbol,
   searchStocks,
   getStockHistory,
-  getMarketSummary,
 };

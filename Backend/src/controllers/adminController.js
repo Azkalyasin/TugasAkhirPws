@@ -220,6 +220,18 @@ const updateStock = async (req, res) => {
       }
     });
 
+      await prisma.stockHistory.create({
+      data: {
+        stockId: stock.id,
+        date: new Date(),
+        open: stock.open,
+        high: stock.high,
+        low: stock.low,
+        close: stock.close,
+        volume: stock.volume
+      }
+    });
+
     res.json({
       success: true,
       message: 'Stock berhasil diupdate',

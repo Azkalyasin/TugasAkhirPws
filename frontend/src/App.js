@@ -982,7 +982,6 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
     { id: "stock-detail", name: "Get Stock Detail", method: "GET", path: "/api/v1/stocks/:symbol" },
     { id: "search", name: "Search Stocks", method: "GET", path: "/api/v1/stocks/search" },
     { id: "history", name: "Stock History", method: "GET", path: "/api/v1/stocks/:symbol/history" },
-    { id: "summary", name: "Market Summary", method: "GET", path: "/api/v1/market/summary" },
   ];
 
   return (
@@ -1143,33 +1142,6 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
                     ],
                   },
                   meta: { from: "2026-01-01", to: "2026-01-09", count: 3 },
-                }}
-              />
-            )}
-
-            {activeEndpoint === "summary" && (
-              <EndpointDoc
-                method="GET"
-                path="/api/v1/market/summary"
-                title="Get Market Summary"
-                description="Mengambil ringkasan pasar secara keseluruhan"
-                params={[]}
-                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\\n  "http://localhost:3000/api/v1/market/summary"`}
-                response={{
-                  success: true,
-                  data: {
-                    ihsg: { value: 7234.56, change: 45.23, changePercent: 0.63 },
-                    totalStocks: 850,
-                    advancing: 423,
-                    declining: 312,
-                    unchanged: 115,
-                    totalVolume: 12345678900,
-                    totalValue: 8765432100000,
-                    foreignBuy: 1234567890000,
-                    foreignSell: 987654321000,
-                    foreignNet: 246913569000,
-                    lastUpdate: "2026-01-11T14:30:00.000Z",
-                  },
                 }}
               />
             )}
