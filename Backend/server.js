@@ -29,7 +29,6 @@ app.get('/', (req, res) => {
       auth: '/auth',
       api: '/api/v1',
       admin: '/admin',
-      docs: 'https://docs.stockapi.id'
     }
   });
 });

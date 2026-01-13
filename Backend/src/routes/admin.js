@@ -5,7 +5,6 @@ const {
   createStock,
   updateStock,
   deleteStock,
-  updateUserPlan,
   getAllStocksAdmin
 } = require('../controllers/adminController');
 const { authenticate, isAdmin } = require('../middleware/auth');
@@ -22,14 +21,12 @@ console.log({
   createStock,
   updateStock,
   deleteStock,
-  updateUserPlan,
   getAllStocksAdmin
 });
 
 
 // User management
 router.get('/users', getAllUsers);
-router.patch('/users/:id/plan', updateUserPlan);
 
 // Statistics
 router.get('/stats', getStats);

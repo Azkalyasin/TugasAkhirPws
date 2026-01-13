@@ -284,66 +284,6 @@ const deleteStock = async (req, res) => {
   }
 };
 
-/**
- * Update user plan
- */
-const updateUserPlan = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { plan } = req.body;
-
-    if (!['FREE', 'STARTER', 'PRO', 'ENTERPRISE'].includes(plan)) {
-      return res.status(400).json({
-        success: false,
-        error: {
-          code: 'INVALID_PLAN',
-          message: 'Plan tidak valid'
-        }
-      });
-    }
-
-    const quotas = {
-      FREE: { monthly: 1000, daily: 100 },
-      STARTER: { monthly: 50000, daily: 5000 },
-      PRO: { monthly: 500000, daily: 50000 },
-      ENTERPRISE: { monthly: 999999999, daily: 999999999 }
-    };
-
-    const user = await prisma.user.update({
-      where: { id },
-      data: {
-        plan,
-        monthlyQuota: quotas[plan].monthly,
-        dailyQuota: quotas[plan].daily
-      }
-    });
-
-    res.json({
-      success: true,
-      message: 'User plan berhasil diupdate',
-      data: user
-    });
-  } catch (error) {
-    if (error.code === 'P2025') {
-      return res.status(404).json({
-        success: false,
-        error: {
-          code: 'USER_NOT_FOUND',
-          message: 'User tidak ditemukan'
-        }
-      });
-    }
-
-    console.error('Update user plan error:', error);
-    res.status(500).json({
-      success: false,
-      error: {
-        code: 'SERVER_ERROR',
-        message: 'Terjadi kesalahan server'
-      }
-    });
-  }
-};
 
 const getAllStocksAdmin = async (req, res) => {
   try {
@@ -375,6 +315,5 @@ module.exports = {
   createStock,
   updateStock,
   deleteStock,
-  updateUserPlan,
   getAllStocksAdmin
 };

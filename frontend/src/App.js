@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Key, TrendingUp, Users, Database, Copy, RefreshCw, LogOut, BookOpen, BarChart3, Shield, Eye, EyeOff, Plus, Edit, Trash2, CheckCircle, AlertCircle, Code, Zap } from "lucide-react";
+import { Key, TrendingUp, Users, Database, Copy, RefreshCw, LogOut, BookOpen, BarChart3, Shield, Eye, EyeOff, Plus, Edit, Trash2, CheckCircle, AlertCircle, Code, Zap, X } from "lucide-react";
 
 // API Base URL - sesuaikan dengan backend Anda
 const API_URL = "http://localhost:3000";
@@ -92,9 +92,7 @@ const LandingPage = ({ setCurrentPage }) => {
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 py-20 text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-6">
-          API Data Saham Indonesia
-          <br />
-          untuk Developer
+          API Data Saham Indonesia <br /> untuk Developer
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Akses data pasar saham real-time dari Bursa Efek Indonesia dengan API yang mudah dan cepat. Mulai gratis, upgrade kapan saja.</p>
         <button onClick={() => setCurrentPage("register")} className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium text-lg inline-flex items-center gap-2">
@@ -161,16 +159,13 @@ const LoginPage = ({ setCurrentPage, setToken, setUser, showNotification }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
       const data = await response.json();
-
       if (data.success) {
         localStorage.setItem("token", data.data.token);
         setToken(data.data.token);
@@ -195,44 +190,25 @@ const LoginPage = ({ setCurrentPage, setToken, setUser, showNotification }) => {
           <h2 className="text-3xl font-bold">Login ke StockAPI</h2>
           <p className="text-gray-600 mt-2">Selamat datang kembali!</p>
         </div>
-
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="your@email.com"
-              required
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="your@email.com" required />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="••••••••"
-              required
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="••••••••" required />
           </div>
-
           <button type="submit" disabled={loading} className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50">
             {loading ? "Loading..." : "Login"}
           </button>
         </form>
-
         <p className="text-center mt-6 text-gray-600">
           Belum punya akun?{" "}
           <button onClick={() => setCurrentPage("register")} className="text-indigo-600 hover:text-indigo-800 font-medium">
             Register
           </button>
         </p>
-
         <button onClick={() => setCurrentPage("landing")} className="w-full mt-4 py-2 text-gray-600 hover:text-gray-800">
           ← Kembali
         </button>
@@ -251,16 +227,13 @@ const RegisterPage = ({ setCurrentPage, setToken, setUser, showNotification }) =
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-
       const data = await response.json();
-
       if (data.success) {
         localStorage.setItem("token", data.data.token);
         setToken(data.data.token);
@@ -285,57 +258,29 @@ const RegisterPage = ({ setCurrentPage, setToken, setUser, showNotification }) =
           <h2 className="text-3xl font-bold">Register StockAPI</h2>
           <p className="text-gray-600 mt-2">Mulai gratis, upgrade kapan saja</p>
         </div>
-
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="John Doe"
-              required
-            />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="John Doe" required />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="your@email.com"
-              required
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="your@email.com" required />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              placeholder="Minimal 6 karakter"
-              required
-              minLength={6}
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Minimal 6 karakter" required minLength={6} />
           </div>
-
           <button type="submit" disabled={loading} className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50">
             {loading ? "Loading..." : "Register"}
           </button>
         </form>
-
         <p className="text-center mt-6 text-gray-600">
           Sudah punya akun?{" "}
           <button onClick={() => setCurrentPage("login")} className="text-indigo-600 hover:text-indigo-800 font-medium">
             Login
           </button>
         </p>
-
         <button onClick={() => setCurrentPage("landing")} className="w-full mt-4 py-2 text-gray-600 hover:text-gray-800">
           ← Kembali
         </button>
@@ -356,7 +301,6 @@ const UserDashboard = ({ user, setUser, logout, setCurrentPage, showNotification
 
   const handleRegenerateKey = async () => {
     if (!window.confirm("Yakin ingin regenerate API Key? Key lama akan invalid.")) return;
-
     try {
       const response = await fetch(`${API_URL}/auth/regenerate-key`, {
         method: "POST",
@@ -364,7 +308,6 @@ const UserDashboard = ({ user, setUser, logout, setCurrentPage, showNotification
           Authorization: `Bearer ${token}`,
         },
       });
-
       const data = await response.json();
       if (data.success) {
         setUser({ ...user, apiKey: data.data.apiKey });
@@ -388,8 +331,7 @@ const UserDashboard = ({ user, setUser, logout, setCurrentPage, showNotification
           </div>
           <div className="flex items-center gap-4">
             <button onClick={() => setCurrentPage("documentation")} className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-indigo-600">
-              <BookOpen size={20} />
-              Docs
+              <BookOpen size={20} /> Docs
             </button>
             <div className="flex items-center gap-3">
               <div className="text-right">
@@ -448,7 +390,6 @@ const UserDashboard = ({ user, setUser, logout, setCurrentPage, showNotification
             <div className="bg-white p-6 rounded-xl shadow-md">
               <h3 className="text-xl font-bold mb-4">Your API Key</h3>
               <p className="text-gray-600 mb-4">Gunakan API Key ini untuk mengakses semua endpoint StockAPI. Jangan share ke publik!</p>
-
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700">API Key</span>
@@ -463,10 +404,8 @@ const UserDashboard = ({ user, setUser, logout, setCurrentPage, showNotification
                   </button>
                 </div>
               </div>
-
               <button onClick={handleRegenerateKey} className="mt-4 flex items-center gap-2 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50">
-                <RefreshCw size={20} />
-                Regenerate API Key
+                <RefreshCw size={20} /> Regenerate API Key
               </button>
             </div>
 
@@ -477,12 +416,10 @@ const UserDashboard = ({ user, setUser, logout, setCurrentPage, showNotification
                 <pre className="text-sm">
                   {`// JavaScript (Fetch)
 fetch('http://localhost:5000/api/v1/stocks', {
-  headers: {
-    'X-API-Key': '${user.apiKey}'
-  }
+  headers: { 'X-API-Key': '${user.apiKey}' }
 })
-.then(res => res.json())
-.then(data => console.log(data));`}
+  .then(res => res.json())
+  .then(data => console.log(data));`}
                 </pre>
               </div>
             </div>
@@ -504,9 +441,7 @@ fetch('http://localhost:5000/api/v1/stocks', {
                 <div className="w-full bg-gray-200 rounded-full h-4">
                   <div className="bg-indigo-600 h-4 rounded-full transition-all" style={{ width: `${Math.min(quotaPercentage, 100)}%` }} />
                 </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  {quotaPercentage < 80 ? "✅ You have plenty of quota remaining" : quotaPercentage < 95 ? "⚠️ You are approaching your quota limit" : "🚨 Quota almost exhausted. Consider upgrading."}
-                </p>
+                <p className="text-sm text-gray-600 mt-2">{quotaPercentage < 80 ? "✅ You have plenty of quota remaining" : quotaPercentage < 95 ? "⚠️ You are approaching your quota limit" : "🚨 Quota almost exhausted. Consider upgrading."}</p>
               </div>
             </div>
 
@@ -563,6 +498,156 @@ const PlanDetail = ({ label, value }) => (
   </div>
 );
 
+// Stock Form Modal Component
+const StockFormModal = ({ isOpen, onClose, stock, onSubmit, loading }) => {
+  const [formData, setFormData] = useState({
+    symbol: "",
+    name: "",
+    sector: "",
+    price: "",
+    change: "",
+    changePercent: "",
+    volume: "",
+    marketCap: "",
+    value: "",
+    foreignBuy: "",
+    foreignSell: "",
+  });
+
+  useEffect(() => {
+    if (stock) {
+      setFormData({
+        symbol: stock.symbol || "",
+        name: stock.name || "",
+        sector: stock.sector || "",
+        price: stock.price || "",
+        change: stock.change || "",
+        changePercent: stock.changePercent || "",
+        volume: stock.volume || "",
+        marketCap: stock.marketCap || "",
+        value: stock.value || "",
+        foreignBuy: stock.foreignBuy || "",
+        foreignSell: stock.foreignSell || "",
+      });
+    } else {
+      setFormData({
+        symbol: "",
+        name: "",
+        sector: "",
+        price: "",
+        change: "",
+        changePercent: "",
+        volume: "",
+        marketCap: "",
+        value: "",
+        foreignBuy: "",
+        foreignSell: "",
+      });
+    }
+  }, [stock, isOpen]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
+          <h2 className="text-2xl font-bold">{stock ? "Edit Stock" : "Add New Stock"}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
+            <X size={24} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Symbol <span className="text-red-500">*</span>
+              </label>
+              <input type="text" name="symbol" value={formData.symbol} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="BBCA" required disabled={stock !== null} />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Name <span className="text-red-500">*</span>
+              </label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Bank Central Asia Tbk" required />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Sector</label>
+              <input type="text" name="sector" value={formData.sector} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Banking" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Price <span className="text-red-500">*</span>
+              </label>
+              <input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="9875" required />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Change</label>
+              <input type="number" step="0.01" name="change" value={formData.change} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="125" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Change Percent (%)</label>
+              <input type="number" step="0.01" name="changePercent" value={formData.changePercent} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="1.28" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Volume</label>
+              <input type="number" name="volume" value={formData.volume} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="45678900" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Market Cap</label>
+              <input type="number" name="marketCap" value={formData.marketCap} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="1234567890000" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Value</label>
+              <input type="number" name="value" value={formData.value} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="1000000000" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Foreign Buy</label>
+              <input type="number" name="foreignBuy" value={formData.foreignBuy} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="500000000" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Foreign Sell</label>
+              <input type="number" name="foreignSell" value={formData.foreignSell} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="300000000" />
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button type="submit" disabled={loading} className="flex-1 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50">
+              {loading ? "Saving..." : stock ? "Update Stock" : "Add Stock"}
+            </button>
+            <button type="button" onClick={onClose} className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 // Admin Dashboard
 const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token }) => {
   const [activeTab, setActiveTab] = useState("stats");
@@ -570,6 +655,9 @@ const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token 
   const [stocks, setStocks] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showStockModal, setShowStockModal] = useState(false);
+  const [editingStock, setEditingStock] = useState(null);
+  const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
     if (activeTab === "users") fetchUsers();
@@ -582,7 +670,9 @@ const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token 
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
       if (data.success) setUsers(data.data);
@@ -596,8 +686,10 @@ const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token 
   const fetchStocks = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_URL}/api/v1/stocks`, {
-        headers: { "X-API-Key": user.apiKey || "admin-bypass" },
+      const response = await fetch(`${API_URL}/admin/stocks`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
       if (data.success) setStocks(data.data);
@@ -612,7 +704,9 @@ const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token 
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/admin/stats`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
       if (data.success) setStats(data.data);
@@ -623,13 +717,54 @@ const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token 
     }
   };
 
+  const handleAddStock = () => {
+    setEditingStock(null);
+    setShowStockModal(true);
+  };
+
+  const handleEditStock = (stock) => {
+    setEditingStock(stock);
+    setShowStockModal(true);
+  };
+
+  const handleSubmitStock = async (formData) => {
+    setFormLoading(true);
+    try {
+      const url = editingStock ? `${API_URL}/admin/stocks/${editingStock.id}` : `${API_URL}/admin/stocks`;
+      const method = editingStock ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        showNotification(editingStock ? "Stock berhasil diupdate" : "Stock berhasil ditambahkan");
+        setShowStockModal(false);
+        fetchStocks();
+      } else {
+        showNotification(data.error?.message || "Gagal menyimpan stock", "error");
+      }
+    } catch (error) {
+      showNotification("Terjadi kesalahan", "error");
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
   const deleteStock = async (id) => {
     if (!window.confirm("Yakin ingin hapus stock ini?")) return;
-
     try {
       const response = await fetch(`${API_URL}/admin/stocks/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
       if (data.success) {
@@ -775,59 +910,63 @@ const AdminDashboard = ({ user, logout, setCurrentPage, showNotification, token 
 
         {/* Stocks Tab */}
         {activeTab === "stocks" && (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h3 className="text-xl font-bold">Stock Management</h3>
-              <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-                <Plus size={20} />
-                Add Stock
-              </button>
-            </div>
-            {loading ? (
-              <div className="p-8 text-center">Loading...</div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Symbol</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Name</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Price</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Change</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Volume</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {stocks.map((stock) => (
-                      <tr key={stock.symbol}>
-                        <td className="px-4 py-3 text-sm font-bold">{stock.symbol}</td>
-                        <td className="px-4 py-3 text-sm">{stock.name}</td>
-                        <td className="px-4 py-3 text-sm">Rp {stock.price.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-sm">
-                          <span className={`${stock.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}>
-                            {stock.changePercent >= 0 ? "+" : ""}
-                            {stock.changePercent.toFixed(2)}%
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-sm">{stock.volume.toLocaleString()}</td>
-                        <td className="px-4 py-3 text-sm">
-                          <div className="flex gap-2">
-                            <button className="p-1 text-blue-600 hover:bg-blue-50 rounded">
-                              <Edit size={16} />
-                            </button>
-                            <button onClick={() => deleteStock(stock.id)} className="p-1 text-red-600 hover:bg-red-50 rounded">
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          <>
+            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+              <div className="p-6 border-b flex justify-between items-center">
+                <h3 className="text-xl font-bold">Stock Management</h3>
+                <button onClick={handleAddStock} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                  <Plus size={20} /> Add Stock
+                </button>
               </div>
-            )}
-          </div>
+              {loading ? (
+                <div className="p-8 text-center">Loading...</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Symbol</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Name</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Price</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Change</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Volume</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                      {stocks.map((stock) => (
+                        <tr key={stock.symbol}>
+                          <td className="px-4 py-3 text-sm font-bold">{stock.symbol}</td>
+                          <td className="px-4 py-3 text-sm">{stock.name}</td>
+                          <td className="px-4 py-3 text-sm">Rp {stock.price.toLocaleString()}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <span className={`${stock.changePercent >= 0 ? "text-green-600" : "text-red-600"}`}>
+                              {stock.changePercent >= 0 ? "+" : ""}
+                              {stock.changePercent.toFixed(2)}%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-sm">{stock.volume.toLocaleString()}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <div className="flex gap-2">
+                              <button onClick={() => handleEditStock(stock)} className="p-1 text-blue-600 hover:bg-blue-50 rounded">
+                                <Edit size={16} />
+                              </button>
+                              <button onClick={() => deleteStock(stock.id)} className="p-1 text-red-600 hover:bg-red-50 rounded">
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* Stock Form Modal */}
+            <StockFormModal isOpen={showStockModal} onClose={() => setShowStockModal(false)} stock={editingStock} onSubmit={handleSubmitStock} loading={formLoading} />
+          </>
         )}
       </div>
     </div>
@@ -878,11 +1017,7 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
               <h3 className="font-bold mb-4">Endpoints</h3>
               <div className="space-y-2">
                 {endpoints.map((endpoint) => (
-                  <button
-                    key={endpoint.id}
-                    onClick={() => setActiveEndpoint(endpoint.id)}
-                    className={`w-full text-left px-3 py-2 rounded text-sm ${activeEndpoint === endpoint.id ? "bg-indigo-100 text-indigo-800 font-medium" : "hover:bg-gray-100"}`}
-                  >
+                  <button key={endpoint.id} onClick={() => setActiveEndpoint(endpoint.id)} className={`w-full text-left px-3 py-2 rounded text-sm ${activeEndpoint === endpoint.id ? "bg-indigo-100 text-indigo-800 font-medium" : "hover:bg-gray-100"}`}>
                     {endpoint.name}
                   </button>
                 ))}
@@ -912,28 +1047,27 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
                   { name: "sort", type: "string", description: "Sort by field (price, volume, change)" },
                   { name: "order", type: "string", description: "asc atau desc (default: desc)" },
                 ]}
-                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\
-  "http://localhost:5000/api/v1/stocks?page=1&limit=10"`}
-                response={`{
-  "success": true,
-  "data": [
-    {
-      "symbol": "BBCA",
-      "name": "Bank Central Asia Tbk",
-      "price": 9875,
-      "change": 125,
-      "changePercent": 1.28,
-      "volume": 45678900,
-      "marketCap": 1234567890000,
-      "lastUpdate": "2026-01-11T14:30:00Z"
-    }
-  ],
-  "meta": {
-    "total": 850,
-    "page": 1,
-    "perPage": 10
-  }
-}`}
+                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\\n  "http://localhost:5000/api/v1/stocks?page=1&limit=10"`}
+                response={{
+                  success: true,
+                  data: [
+                    {
+                      symbol: "BBCA",
+                      name: "Bank Central Asia Tbk",
+                      price: 9875,
+                      change: 125,
+                      changePercent: 1.28,
+                      volume: 45678900,
+                      marketCap: 1234567890000,
+                      lastUpdate: "2026-01-11T14:30:00Z",
+                    },
+                  ],
+                  meta: {
+                    total: 850,
+                    page: 1,
+                    perPage: 10,
+                  },
+                }}
               />
             )}
 
@@ -944,22 +1078,21 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
                 title="Get Stock Detail"
                 description="Mengambil detail lengkap saham berdasarkan symbol"
                 params={[{ name: "symbol", type: "string", description: "Ticker symbol (contoh: BBCA, BBRI)", required: true }]}
-                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\
-  "http://localhost:5000/api/v1/stocks/BBCA"`}
-                response={`{
-  "success": true,
-  "data": {
-    "symbol": "BBCA",
-    "name": "Bank Central Asia Tbk",
-    "sector": "Banking",
-    "price": 9875,
-    "change": 125,
-    "changePercent": 1.28,
-    "volume": 45678900,
-    "marketCap": 1234567890000,
-    "lastUpdate": "2026-01-11T14:30:00Z"
-  }
-}`}
+                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\\n  "http://localhost:5000/api/v1/stocks/BBCA"`}
+                response={{
+                  success: true,
+                  data: {
+                    symbol: "BBCA",
+                    name: "Bank Central Asia Tbk",
+                    sector: "Banking",
+                    price: 9875,
+                    change: 125,
+                    changePercent: 1.28,
+                    volume: 45678900,
+                    marketCap: 1234567890000,
+                    lastUpdate: "2026-01-11T14:30:00Z",
+                  },
+                }}
               />
             )}
 
@@ -973,29 +1106,15 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
                   { name: "q", type: "string", description: "Query pencarian (min 2 karakter)", required: true },
                   { name: "limit", type: "number", description: "Jumlah hasil (default: 10, max: 50)" },
                 ]}
-                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\
-  "http://localhost:5000/api/v1/stocks/search?q=bank&limit=5"`}
-                response={`{
-  "success": true,
-  "data": [
-    {
-      "symbol": "BBCA",
-      "name": "Bank Central Asia Tbk",
-      "price": 9875,
-      "changePercent": 1.28
-    },
-    {
-      "symbol": "BBRI",
-      "name": "Bank Rakyat Indonesia Tbk",
-      "price": 5250,
-      "changePercent": -0.94
-    }
-  ],
-  "meta": {
-    "query": "bank",
-    "found": 2
-  }
-}`}
+                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\\n  "http://localhost:5000/api/v1/stocks/search?q=bank&limit=5"`}
+                response={{
+                  success: true,
+                  data: [
+                    { symbol: "BBCA", name: "Bank Central Asia Tbk", price: 9875, changePercent: 1.28 },
+                    { symbol: "BBRI", name: "Bank Rakyat Indonesia Tbk", price: 5250, changePercent: -0.94 },
+                  ],
+                  meta: { query: "bank", found: 2 },
+                }}
               />
             )}
 
@@ -1011,80 +1130,49 @@ const DocumentationPage = ({ user, setCurrentPage, logout }) => {
                   { name: "to", type: "date", description: "Tanggal akhir (YYYY-MM-DD)", required: true },
                   { name: "interval", type: "string", description: "daily, weekly, monthly (default: daily)" },
                 ]}
-                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\
-  "http://localhost:3000/api/v1/stocks/BBCA/history?from=2026-01-01&to=2026-01-09"`}
-                response={`{
-  "success": true,
-  "data": {
-    "symbol": "BBCA",
-    "interval": "daily",
-    "prices": [
-      {
-        "date": "2026-01-02T00:00:00.000Z",
-        "open": 9700,
-        "high": 9800,
-        "low": 9650,
-        "close": 9750,
-        "volume": "42000000"
-      },
-      {
-        "date": "2026-01-03T00:00:00.000Z",
-        "open": 9750,
-        "high": 9850,
-        "low": 9700,
-        "close": 9800,
-        "volume": "38500000"
-      },
-      {
-        "date": "2026-01-06T00:00:00.000Z",
-        "open": 9800,
-        "high": 9900,
-        "low": 9750,
-        "close": 9875,
-        "volume": "45678900"
-      }
-    ]
-  },
-  "meta": {
-    "from": "2026-01-01",
-    "to": "2026-01-09",
-    "count": 3
-  }
-}`}
+                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\\n  "http://localhost:3000/api/v1/stocks/BBCA/history?from=2026-01-01&to=2026-01-09"`}
+                response={{
+                  success: true,
+                  data: {
+                    symbol: "BBCA",
+                    interval: "daily",
+                    prices: [
+                      { date: "2026-01-02T00:00:00.000Z", open: 9700, high: 9800, low: 9650, close: 9750, volume: "42000000" },
+                      { date: "2026-01-03T00:00:00.000Z", open: 9750, high: 9850, low: 9700, close: 9800, volume: "38500000" },
+                      { date: "2026-01-06T00:00:00.000Z", open: 9800, high: 9900, low: 9750, close: 9875, volume: "45678900" },
+                    ],
+                  },
+                  meta: { from: "2026-01-01", to: "2026-01-09", count: 3 },
+                }}
               />
             )}
 
             {activeEndpoint === "summary" && (
-  <EndpointDoc
-    method="GET"
-    path="/api/v1/market/summary"
-    title="Get Market Summary"
-    description="Mengambil ringkasan pasar secara keseluruhan"
-    params={[]}
-    example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\
-  "http://localhost:3000/api/v1/market/summary"`}
-    response={`{
-  "success": true,
-  "data": {
-    "ihsg": {
-      "value": 7234.56,
-      "change": 45.23,
-      "changePercent": 0.63
-    },
-    "totalStocks": 850,
-    "advancing": 423,
-    "declining": 312,
-    "unchanged": 115,
-    "totalVolume": 12345678900,
-    "totalValue": 8765432100000,
-    "foreignBuy": 1234567890000,
-    "foreignSell": 987654321000,
-    "foreignNet": 246913569000,
-    "lastUpdate": "2026-01-11T14:30:00.000Z"
-  }
-}`}
-  />
-)}
+              <EndpointDoc
+                method="GET"
+                path="/api/v1/market/summary"
+                title="Get Market Summary"
+                description="Mengambil ringkasan pasar secara keseluruhan"
+                params={[]}
+                example={`curl -H "X-API-Key: ${user?.apiKey || "your_key"}" \\\n  "http://localhost:3000/api/v1/market/summary"`}
+                response={{
+                  success: true,
+                  data: {
+                    ihsg: { value: 7234.56, change: 45.23, changePercent: 0.63 },
+                    totalStocks: 850,
+                    advancing: 423,
+                    declining: 312,
+                    unchanged: 115,
+                    totalVolume: 12345678900,
+                    totalValue: 8765432100000,
+                    foreignBuy: 1234567890000,
+                    foreignSell: 987654321000,
+                    foreignNet: 246913569000,
+                    lastUpdate: "2026-01-11T14:30:00.000Z",
+                  },
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -1101,7 +1189,7 @@ const EndpointDoc = ({ method, path, title, description, params, example, respon
     <h3 className="text-xl font-bold mb-2">{title}</h3>
     <p className="text-gray-600 mb-4">{description}</p>
 
-    {params.length > 0 && (
+    {params && params.length > 0 && (
       <>
         <h4 className="font-bold mb-2">Parameters:</h4>
         <div className="space-y-2 mb-4">
@@ -1122,12 +1210,11 @@ const EndpointDoc = ({ method, path, title, description, params, example, respon
       <pre className="text-sm">{example}</pre>
     </div>
 
-    {/* BAGIAN BARU - Response Example */}
     {response && (
       <>
         <h4 className="font-bold mb-2 mt-6">Response Example:</h4>
         <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
-          <pre className="text-sm">{response}</pre>
+          <pre className="text-sm">{JSON.stringify(response, null, 2)}</pre>
         </div>
       </>
     )}
